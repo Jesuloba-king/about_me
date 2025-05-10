@@ -34,8 +34,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  google_fonts: ^6.2.1
+  # google_fonts: ^6.2.1
   flutter_svg: ^2.1.0
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,7 @@ flutter:
     - assets/fonts/
     - assets/png/
     - assets/svg/
+    - assets/moi/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -90,6 +92,13 @@ flutter:
         - asset: assets/fonts/Agbalumo-Regular.ttf
         # - asset: fonts/TrajanPro_Bold.ttf
         #   weight: 700
+
+    - family: Geist
+      fonts:
+        - asset: assets/moi/Geist-Black.ttf
+        - asset: assets/moi/Geist-Bold.ttf
+        - asset: assets/moi/Geist-Medium.ttf
+        - asset: assets/moi/Geist-Thin.ttf
   
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
