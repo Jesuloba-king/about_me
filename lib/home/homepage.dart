@@ -13,11 +13,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //List of categories
-  final List<Categories> _myCat = [
-    Categories(imagePath: "assets/png/hamburguer.png", text: "Burger"),
-    Categories(imagePath: "assets/png/pizza.png", text: "Pizza"),
-    Categories(imagePath: "assets/png/taco.png", text: "Sandwich"),
+  //List of Menu
+  final List<Menu> _myCat = [
+    Menu(imageurl: "assets/png/hamburguer.png", menutitle: "Burger"),
+    Menu(imageurl: "assets/png/pizza.png", menutitle: "Pizza"),
+    Menu(imageurl: "assets/png/taco.png", menutitle: "Sandwich"),
   ];
 
   // FoodItems
@@ -26,9 +26,9 @@ class _HomePageState extends State<HomePage> {
         imagePath: "assets/png/hamburguer.png",
         title: "Chicken Burger King",
         subtitle: "200 grams chicken + cheese  Lettuce + tomato",
-        price: "22.5",
-        rating: "4.5",
-        icon: Icons.star,
+        price: 22.5,
+        rating: 4.5,
+        star: Icons.star,
         add: Icons.add),
 
     //
@@ -36,9 +36,9 @@ class _HomePageState extends State<HomePage> {
         imagePath: "assets/png/hamburguer.png",
         title: " Cheese Burger",
         subtitle: "200 grams chicken + cheese  Lettuce + tomato",
-        price: "22.5",
-        rating: "4.5",
-        icon: Icons.star,
+        price: 22.5,
+        rating: 4.5,
+        star: Icons.star,
         add: Icons.add),
 
     //
@@ -46,9 +46,9 @@ class _HomePageState extends State<HomePage> {
         imagePath: "assets/png/hamburguer.png",
         title: "Veggie Burger",
         subtitle: "200 gram cheese  Lettuce + tomato",
-        price: "22.5",
-        rating: "4.5",
-        icon: Icons.star,
+        price: 22.5,
+        rating: 4.5,
+        star: Icons.star,
         add: Icons.add),
 
     //
@@ -56,9 +56,9 @@ class _HomePageState extends State<HomePage> {
         imagePath: "assets/png/hamburguer.png",
         title: "Meat Burger",
         subtitle: "200 grams chicken , onions +  Lettuce + tomato",
-        price: "30.5",
-        rating: "3.5",
-        icon: Icons.star,
+        price: 30.5,
+        rating: 3.5,
+        star: Icons.star,
         add: Icons.add),
   ];
   @override
@@ -187,14 +187,14 @@ class _HomePageState extends State<HomePage> {
                 (index) {
                   final category = _myCat[index];
                   return Chip(
-                    label: Text(category.text),
+                    label: Text(category.menutitle),
                     avatar: Image.asset(
-                      category.imagePath,
+                      category.imageurl,
                       // height: 40,
                       // width: 40,
                     ),
-                    backgroundColor: Color(0xffFF9431),
-                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: Colors.blueAccent,
+                    labelStyle: TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Agbalumo"),
                   );
                 },
               ),
@@ -242,11 +242,11 @@ class _HomePageState extends State<HomePage> {
                           Row(
                             children: [
                               Icon(
-                                food.icon,
+                                food.star,
                                 color: Color(0xffFF9431),
                               ),
                               SizedBox(width: 5),
-                              Text(food.rating),
+                              Text(food.rating.toString()),
                             ],
                           ),
 
@@ -315,6 +315,16 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+//new category class
+class Menu {
+  final String menutitle;
+  final String imageurl;
+
+  Menu({required this.menutitle, required this.imageurl});
+
+
+}
+
 //category class
 class Categories {
   final String imagePath;
@@ -327,9 +337,9 @@ class FoodItems {
   final String imagePath;
   final String title;
   final String subtitle;
-  final String price;
-  final String rating;
-  final IconData icon;
+  final num price;
+  final num rating;
+  final IconData star;
   final IconData add;
 
   FoodItems({
@@ -338,7 +348,7 @@ class FoodItems {
     required this.subtitle,
     required this.price,
     required this.rating,
-    required this.icon,
+    required this.star,
     required this.add,
   });
 }

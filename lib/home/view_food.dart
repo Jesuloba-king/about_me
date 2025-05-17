@@ -144,12 +144,12 @@ class _FoodDetailsState extends State<FoodDetails> {
                       Row(
                         children: [
                           Icon(
-                            widget.myfood.icon,
+                            widget.myfood.star,
                             color: Color(0xffFF9431),
                           ),
                           SizedBox(width: 5),
                           Text(
-                            widget.myfood.rating,
+                            widget.myfood.rating.toString(),
                             style: TextStyle(
                                 fontFamily: "DmSans",
                                 fontSize: 18,
