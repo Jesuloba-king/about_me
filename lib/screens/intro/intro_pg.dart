@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../bottom_bar.dart';
+import '../../bottom_bar.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});

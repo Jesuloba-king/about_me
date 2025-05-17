@@ -13,7 +13,7 @@ class _FoodPageState extends State<FoodPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey,
       body: Center(
         child: Text("Food Page"),
       ),

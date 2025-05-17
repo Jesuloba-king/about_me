@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'intro/intro_pg.dart';
+import 'screens/intro/intro_pg.dart';
+
 // import 'package:google_fonts/google_fonts.dart';
 
 void main() {

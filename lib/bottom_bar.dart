@@ -1,6 +1,9 @@
-import 'package:about_me/home/homepage.dart';
+// import 'package:about_me/home/homepage.dart';
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
+import 'screens/home/homepage.dart';
 import 'settings/settings.dart';
 import 'food_page/food_pg.dart';
 
