@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'groceries/splash_pg.dart';
 import 'screens/intro/intro_pg.dart';
 
 // import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +23,8 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffD86804)),
             useMaterial3: true,
             fontFamily: "Geist"),
-        home: IntroPage());
+        home: SplashScreen()
+        // IntroPage(),
+        );
   }
 }

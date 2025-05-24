@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../bottom_bar.dart';
+import '../../settings/settings.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});
@@ -89,7 +90,7 @@ class _IntroPageState extends State<IntroPage> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return MyBottomNavBar();
+                    return SettingsPage();
                   }));
                 },
                 child: Center(
