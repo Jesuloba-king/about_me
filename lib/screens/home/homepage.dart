@@ -1,8 +1,14 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
+
+import '../../bottom_bar.dart';
+import 'models.dart';
 import 'view_food.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +19,84 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    fetchAllProducts();
+    super.initState();
+  }
+
+  bool isLoading = false;
+
+  List<ProductItems> allProducts = [];
+
+  Future<void> fetchAllProducts() async {
+    // Logic to handle user login
+    setState(() {
+      isLoading = true;
+    });
+
+    final String url = "https://fakestoreapi.com/products";
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Authorization' : "Bearer token_here"
+      },
+    );
+
+    //set the loading to false
+    setState(() {
+      isLoading = false;
+    });
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+
+      allProducts = data.map((items) {
+        return ProductItems.fromJson(items);
+      }).toList();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.green,
+        content: Text(
+          "All products fetched successful!",
+          style: TextStyle(
+            fontFamily: "Agbalumo",
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ));
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog.adaptive(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              title: Text("Error"),
+              content: Text(
+                // "Login failed. Invalid credentials."
+                response.body,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "Dismiss",
+                    style: TextStyle(color: Colors.red, fontSize: 18),
+                  ),
+                ),
+              ],
+            );
+          });
+    }
+  }
+
   //List of categories
   final List<Categories> _myCat = [
     Categories(imagePath: "assets/png/hamburguer.png", text: "Burger"),
@@ -20,47 +104,6 @@ class _HomePageState extends State<HomePage> {
     Categories(imagePath: "assets/png/taco.png", text: "Sandwich"),
   ];
 
-  // FoodItems
-  final List<FoodItems> myfoodz = [
-    FoodItems(
-        imagePath: "assets/png/hamburguer.png",
-        title: "Chicken Burger King",
-        subtitle: "200 grams chicken + cheese  Lettuce + tomato",
-        price: "22.5",
-        rating: "4.5",
-        icon: Icons.star,
-        add: Icons.add),
-
-    //
-    FoodItems(
-        imagePath: "assets/png/hamburguer.png",
-        title: " Cheese Burger",
-        subtitle: "200 grams chicken + cheese  Lettuce + tomato",
-        price: "22.5",
-        rating: "4.5",
-        icon: Icons.star,
-        add: Icons.add),
-
-    //
-    FoodItems(
-        imagePath: "assets/png/hamburguer.png",
-        title: "Veggie Burger",
-        subtitle: "200 gram cheese  Lettuce + tomato",
-        price: "22.5",
-        rating: "4.5",
-        icon: Icons.star,
-        add: Icons.add),
-
-    //
-    FoodItems(
-        imagePath: "assets/png/hamburguer.png",
-        title: "Meat Burger",
-        subtitle: "200 grams chicken , onions +  Lettuce + tomato",
-        price: "30.5",
-        rating: "3.5",
-        icon: Icons.star,
-        add: Icons.add),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -203,111 +246,113 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 15),
 
             //food items : //create a class for the food items
-            Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: List.generate(myfoodz.length, (index) {
-                  final food = myfoodz[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return FoodDetails(
-                          myfood: food,
-                        );
-                      }));
-                    },
-                    child: Container(
-                      height: 270,
-                      width: 200,
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.black.withOpacity(0.12),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.12),
-                              spreadRadius: 0,
-                              blurRadius: 8,
-                              offset: Offset(0, 1))
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          //ratings
-                          Row(
+            isLoading
+                ? Center(
+                    child: SpinKitHourGlass(
+                      color: Color(0xffEEA54D),
+                      size: 50.0,
+                    ),
+                  )
+                : Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: List.generate(allProducts.length, (index) {
+                      final food = allProducts[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return FoodDetails(
+                              myfood: food,
+                            );
+                          }));
+                        },
+                        child: Container(
+                          // height: 270,
+                          width: 200,
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: Color(0xffF0E9D2),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                food.icon,
-                                color: Color(0xffFF9431),
-                              ),
-                              SizedBox(width: 5),
-                              Text(food.rating),
-                            ],
-                          ),
+                              //ratings
 
-                          //  burger imagee
-                          Image.asset(
-                            food.imagePath,
-                            height: 80,
-                          ),
-
-                          //title
-                          Text(food.title,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: "DmSans",
-                                  color: Color(0xff0D0D0D),
-                                  fontWeight: FontWeight.w600)),
-                          //subtitle
-                          Text(
-                            food.subtitle,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontFamily: "DmSans",
-                                color: Color(0xff0D0D0D),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(height: 8),
-
-                          //price and add button
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "\$ ${food.price}",
-                                style: TextStyle(
-                                    fontFamily: "DmSans",
-                                    color: Color(0xffFF9431),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                  height: 28,
-                                  width: 28,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xffFF9431)),
-                                  child: Icon(
-                                    food.add,
-                                    color: Colors.white,
+                              //  burger imagee
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xffF2F2F2),
+                                      Color(0xffFFFFFF),
+                                      Color(0xffF2F2F2),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                   ),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Image.network(
+                                  food.image.toString(),
+                                  height: 110,
                                 ),
                               ),
+
+                              SizedBox(height: 15),
+
+                              //title
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(food.title.toString(),
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                                fontFamily: "DmSans",
+                                                color: Color(0xff0D0D0D),
+                                                fontWeight: FontWeight.w600)),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          food.category.toString(),
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              fontFamily: "DmSans",
+                                              color: Color(0xff0D0D0D),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  //price
+                                  Text(
+                                    "\$ ${food.price}",
+                                    style: TextStyle(
+                                        fontFamily: "DmSans",
+                                        color: Color(0xffFF9431),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                              //subtitle
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                })),
+                        ),
+                      );
+                    })),
           ],
         ),
       ),

@@ -1,39 +1,19 @@
 import 'package:flutter/material.dart';
 
 import 'homepage.dart';
+import 'models.dart';
 
 class FoodDetails extends StatefulWidget {
   const FoodDetails({super.key, required this.myfood});
 
-  final FoodItems myfood;
+  final ProductItems myfood;
 
   @override
   State<FoodDetails> createState() => _FoodDetailsState();
 }
 
 class _FoodDetailsState extends State<FoodDetails> {
-  int _counter = 0;
-
   bool _isLiked = false;
-
-  // int _decrease = 0;
-  void increaseAmount() {
-    setState(() {
-      _counter++;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(backgroundColor: Color(0xffD86804), content: Text('You added!')),
-    );
-  }
-
-  void decreaseCounter() {
-    setState(() {
-      _counter--;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('You removed!')),
-    );
-  }
 
   //likes
   void onTapLike() {
@@ -57,6 +37,27 @@ class _FoodDetailsState extends State<FoodDetails> {
 
   @override
   Widget build(BuildContext context) {
+    int counter = widget.myfood.rating?.count?.toInt() ?? 0;
+    // int _decrease = 0;
+    void increaseAmount() {
+      setState(() {
+        counter++;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            backgroundColor: Color(0xffD86804), content: Text('You added!')),
+      );
+    }
+
+    void decreaseCounter() {
+      setState(() {
+        counter--;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('You removed!')),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Color(0xffD86804),
       body: Column(
@@ -105,10 +106,13 @@ class _FoodDetailsState extends State<FoodDetails> {
               ],
             ),
           ),
-          Center(
-            child: Image.asset(
-              widget.myfood.imagePath,
-              height: 250,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Image.network(
+                widget.myfood.image.toString(),
+                height: 250,
+              ),
             ),
           ),
           Expanded(
@@ -131,7 +135,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                     children: [
                       Expanded(
                         child: Text(
-                          widget.myfood.title,
+                          widget.myfood.title.toString(),
                           style: TextStyle(
                               fontFamily: "DmSans",
                               fontSize: 25,
@@ -144,12 +148,12 @@ class _FoodDetailsState extends State<FoodDetails> {
                       Row(
                         children: [
                           Icon(
-                            widget.myfood.icon,
+                            Icons.star,
                             color: Color(0xffFF9431),
                           ),
                           SizedBox(width: 5),
                           Text(
-                            widget.myfood.rating,
+                            widget.myfood.rating?.rate.toString() ?? "0.0",
                             style: TextStyle(
                                 fontFamily: "DmSans",
                                 fontSize: 18,
@@ -210,7 +214,7 @@ class _FoodDetailsState extends State<FoodDetails> {
 
                             //increase counter
                             Text(
-                              "$_counter",
+                              "$counter",
                               style: TextStyle(
                                   color: Color(0xff0D0D0D),
                                   fontSize: 24,
@@ -229,7 +233,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                                     shape: BoxShape.circle,
                                     color: Color(0xffFF9431)),
                                 child: Icon(
-                                  widget.myfood.add,
+                                  Icons.add,
                                   color: Colors.white,
                                 ),
                               ),
@@ -282,7 +286,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    "Crispy seasoned chicken breast, topped with mandatory melted cheese and piled onto soft rolls with onion, avocado, lettuce, tomato and garlic mayo (if ordered). ",
+                    widget.myfood.description.toString(),
                     style: TextStyle(
                         color: Color(0xff0D0D0D),
                         fontSize: 14,
