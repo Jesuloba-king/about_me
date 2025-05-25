@@ -2,13 +2,17 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
+import 'screens/category/category.dart';
 import 'screens/home/homepage.dart';
 import 'settings/settings.dart';
 import 'food_page/food_pg.dart';
 
 class MyBottomNavBar extends StatefulWidget {
-  const MyBottomNavBar({super.key});
+  const MyBottomNavBar({super.key, required this.username});
+
+  final String username;
 
   @override
   _MyBottomNavBarState createState() => _MyBottomNavBarState();
@@ -17,14 +21,16 @@ class MyBottomNavBar extends StatefulWidget {
 class _MyBottomNavBarState extends State<MyBottomNavBar> {
   int pageIndex = 0;
 
-  final List<Widget> pages = [
-    const HomePage(),
-    const FoodPage(),
-    const SettingsPage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      HomePage(
+        username: widget.username,
+      ),
+      const FoodPage(),
+      const MyCategoryPage(),
+      const SettingsPage(),
+    ];
     return Scaffold(
       body: pages[pageIndex],
       bottomNavigationBar: buildMyNavBar(context),
@@ -62,15 +68,15 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
               });
             },
             icon: pageIndex == 0
-                ? const Icon(
-                    Icons.home_filled,
+                ? SvgPicture.asset(
+                    "assets/svg/Home-Fill.svg",
                     color: Color(0xffFF9431),
-                    size: 35,
+                    // size: 35,
                   )
-                : const Icon(
-                    Icons.home_outlined,
-                    color: Color(0xffFF9431),
-                    size: 35,
+                : SvgPicture.asset(
+                    "assets/svg/Home-Fill.svg",
+                    // color: Color(0xffFF9431),
+                    // size: 35,
                   ),
           ),
           IconButton(
@@ -81,15 +87,12 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
               });
             },
             icon: pageIndex == 1
-                ? const Icon(
-                    Icons.shopping_bag,
+                ? SvgPicture.asset(
+                    "assets/svg/Cart.svg",
                     color: Color(0xffFF9431),
-                    size: 35,
                   )
-                : const Icon(
-                    Icons.shopping_bag_outlined,
-                    color: Color(0xffFF9431),
-                    size: 35,
+                : SvgPicture.asset(
+                    "assets/svg/Cart.svg",
                   ),
           ),
           IconButton(
@@ -100,15 +103,28 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
               });
             },
             icon: pageIndex == 2
-                ? const Icon(
-                    Icons.settings,
+                ? SvgPicture.asset(
+                    "assets/svg/Category.svg",
                     color: Color(0xffFF9431),
-                    size: 35,
                   )
-                : const Icon(
-                    Icons.settings_outlined,
+                : SvgPicture.asset(
+                    "assets/svg/Category.svg",
+                  ),
+          ),
+          IconButton(
+            enableFeedback: false,
+            onPressed: () {
+              setState(() {
+                pageIndex = 3;
+              });
+            },
+            icon: pageIndex == 3
+                ? SvgPicture.asset(
+                    "assets/svg/User.svg",
                     color: Color(0xffFF9431),
-                    size: 35,
+                  )
+                : SvgPicture.asset(
+                    "assets/svg/User.svg",
                   ),
           ),
         ],

@@ -17,12 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Tri-Inspire Food App',
+        title: 'D E L I V E R Y',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffD86804)),
+            colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffF0E9D2)),
             useMaterial3: true,
-            fontFamily: "Geist"),
+            fontFamily: "Jakarta"),
         home: SplashScreen()
         // IntroPage(),
         );

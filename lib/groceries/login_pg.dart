@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  bool isVisible = false;
+  bool isVisible = true;
 
   bool isLoading = false;
 
@@ -78,7 +78,9 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => MyBottomNavBar(),
+          builder: (context) => MyBottomNavBar(
+            username: usernameController.text,
+          ),
         ),
       );
     } else {
@@ -338,7 +340,9 @@ class _LoginPageState extends State<LoginPage> {
                         // print("Login successful!");
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return MyBottomNavBar();
+                          return MyBottomNavBar(
+                            username: usernameController.text,
+                          );
                         }));
                         // login(usernameController.text, passwordController.text);
 

@@ -8,11 +8,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 
 import '../../bottom_bar.dart';
+import '../category/category.dart';
 import 'models.dart';
 import 'view_food.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.username});
+
+  final String username;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -98,10 +101,31 @@ class _HomePageState extends State<HomePage> {
   }
 
   //List of categories
-  final List<Categories> _myCat = [
-    Categories(imagePath: "assets/png/hamburguer.png", text: "Burger"),
-    Categories(imagePath: "assets/png/pizza.png", text: "Pizza"),
-    Categories(imagePath: "assets/png/taco.png", text: "Sandwich"),
+  final List<NewCategory> _myCat = [
+    NewCategory(
+        imagePath: "assets/svg/veggie.png",
+        text: "Vegetables",
+        backgroundColor: Color(0xffD3E6F7)),
+    NewCategory(
+        imagePath: "assets/svg/fruit 2.png",
+        text: "Fruits",
+        backgroundColor: Color(0xffEFF7D3)),
+    NewCategory(
+        imagePath: "assets/svg/Ingridient-png 1.png",
+        text: "Ingredients",
+        backgroundColor: Color(0xffD3F7E0)),
+    NewCategory(
+        imagePath: "assets/svg/spice-png 1.png",
+        text: "Spicy",
+        backgroundColor: Color(0xffF7D3EA)),
+    NewCategory(
+        imagePath: "assets/svg/meat 1.png",
+        text: "Meat",
+        backgroundColor: Color(0xffDBD3F7)),
+    NewCategory(
+        imagePath: "assets/svg/Side-Dishes.png",
+        text: "Side Dishes",
+        backgroundColor: Color(0xffF7E4D3)),
   ];
 
   @override
@@ -113,21 +137,21 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         centerTitle: false,
-        title: Row(
-          children: [
-            Icon(
-              Icons.pin_drop_rounded,
-              color: Color(0xffFF9431),
-            ),
-            SizedBox(width: 8),
-            Text("Lagos, Nigeria"),
-            SizedBox(width: 8),
-            Icon(
-              Icons.keyboard_arrow_down_rounded,
-              color: Color(0xffFF9431),
-            ),
-          ],
-        ),
+        // title: Row(
+        //   children: [
+        //     Icon(
+        //       Icons.pin_drop_rounded,
+        //       color: Color(0xffFF9431),
+        //     ),
+        //     SizedBox(width: 8),
+        //     Text("Lagos, Nigeria"),
+        //     SizedBox(width: 8),
+        //     Icon(
+        //       Icons.keyboard_arrow_down_rounded,
+        //       color: Color(0xffFF9431),
+        //     ),
+        //   ],
+        // ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(15),
@@ -135,15 +159,35 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //order food and rider image
+            Text(
+              "Hello ${widget.username}",
+              style: TextStyle(
+                  fontSize: 25,
+                  color: Color(0xff0D0D0D),
+                  fontWeight: FontWeight.w600),
+            ),
             Row(
               children: [
                 Expanded(
                   child: Text(
-                    "Order Your Food Fast and Free",
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+                    "Find the right one for a healthy body",
+                    style: TextStyle(
+                        fontSize: 17,
+                        color: Color(0xffEEBB4D),
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
-                Image.asset("assets/png/delivery 1.png")
+                Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      color: Color(0xffF9F3D0).withOpacity(0.50),
+                      border: Border.all(color: Color(0xffE6E6E6), width: 1),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Icon(
+                    Icons.notifications_none_sharp,
+                    color: Color(0xffEEBB4D),
+                  ),
+                )
               ],
             ),
 
@@ -212,13 +256,35 @@ class _HomePageState extends State<HomePage> {
             //Categories : Let's create a class of Categories - An Image and a Text
             // then create a list of the food categories.
             // show the category as a list
-            Text("Categories",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: "DmSans",
-                    fontSize: 25,
-                    color: Color(0xff0D0D0D),
-                    fontWeight: FontWeight.w600)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Categories",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0xff0D0D0D),
+                        fontWeight: FontWeight.w600)),
+                TextButton(
+                  child: Text(
+                    "See All",
+                    style: TextStyle(
+                        color: Color(0xff3D3014),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  onPressed: () {
+                    // Navigator.push(context, MaterialPageRoute(
+                    //   builder: (context) {
+                    //     return BottomBar(
+                    //       pageIndex: 0,
+                    //     );
+                    //   },
+                    // ));
+                  },
+                ),
+              ],
+            ),
             SizedBox(
               height: 8,
             ),
@@ -229,21 +295,88 @@ class _HomePageState extends State<HomePage> {
                 _myCat.length,
                 (index) {
                   final category = _myCat[index];
-                  return Chip(
-                    label: Text(category.text),
-                    avatar: Image.asset(
-                      category.imagePath,
-                      // height: 40,
-                      // width: 40,
-                    ),
-                    backgroundColor: Color(0xffFF9431),
-                    labelStyle: TextStyle(color: Colors.white),
+                  return Column(
+                    children: [
+                      Container(
+                        // // height: 270,
+                        // width: 200,
+                        width: 70,
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: category.backgroundColor,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              category.imagePath.toString(),
+                              height: 45,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 5),
+
+                      //title
+                      Text(category.text.toString(),
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+
+                              // fontFamily: "DmSans",
+                              color: Color(0xff0D0D0D),
+                              fontWeight: FontWeight.w500)),
+                    ],
                   );
                 },
               ),
             ),
 
             SizedBox(height: 15),
+            // show the category as a list
+            Text("Best Deal",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xff0D0D0D),
+                    fontWeight: FontWeight.w600)),
+            Image.asset(
+              "assets/svg/Group 10.png",
+              // height: 200,
+            ),
+
+            SizedBox(height: 15),
+
+            // show the category as a list
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Best Price",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0xff0D0D0D),
+                        fontWeight: FontWeight.w600)),
+                TextButton(
+                  child: Text(
+                    "See All",
+                    style: TextStyle(
+                        color: Color(0xff3D3014),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  onPressed: () {
+                    // Navigator.push(context, MaterialPageRoute(
+                    //   builder: (context) {
+                    //     return BottomBar(
+                    //       pageIndex: 0,
+                    //     );
+                    //   },
+                    // ));
+                  },
+                ),
+              ],
+            ),
 
             //food items : //create a class for the food items
             isLoading

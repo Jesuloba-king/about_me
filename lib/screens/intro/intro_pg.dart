@@ -1,3 +1,4 @@
+import 'package:about_me/groceries/login_pg.dart';
 import 'package:flutter/material.dart';
 
 import '../../bottom_bar.dart';
@@ -69,7 +70,7 @@ class _IntroPageState extends State<IntroPage> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return MyBottomNavBar();
+                      return LoginPage();
                     }));
                   },
                   child: CircleAvatar(
